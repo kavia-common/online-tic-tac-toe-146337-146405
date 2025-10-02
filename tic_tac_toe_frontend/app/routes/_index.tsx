@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
+import { KnightIcon, QueenIcon } from "~/components/Icons";
 
 // Ocean Professional theme tokens
 const colors = {
@@ -82,8 +83,8 @@ export default function Index() {
     winner === "Draw"
       ? "It’s a draw!"
       : winner
-      ? `Winner: ${winner}`
-      : `Next player: ${currentPlayer}`;
+      ? `Winner: ${winner === "X" ? "Knight" : "Queen"}`
+      : `Next player: ${currentPlayer === "X" ? "Knight" : "Queen"}`;
 
   return (
     <div
@@ -115,6 +116,8 @@ export default function Index() {
           >
             {board.map((cell, idx) => {
               const isDisabled = Boolean(cell) || Boolean(winner);
+              const ariaPiece =
+                cell === "X" ? "Knight" : cell === "O" ? "Queen" : "empty";
               return (
                 <button
                   key={idx}
@@ -123,26 +126,22 @@ export default function Index() {
                   className={[
                     "aspect-square select-none rounded-xl",
                     "flex items-center justify-center",
-                    "text-3xl font-semibold",
                     "transition-all duration-200",
                     "bg-white shadow-sm ring-1 ring-gray-200",
                     "hover:shadow-md hover:-translate-y-0.5",
                     isDisabled ? "opacity-90" : "",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                   ].join(" ")}
-                  style={{
-                    color:
-                      cell === "X"
-                        ? colors.primary
-                        : cell === "O"
-                        ? colors.amber
-                        : colors.text,
-                  }}
-                  aria-label={`Cell ${idx + 1} ${
-                    cell ? `with ${cell}` : "empty"
-                  }`}
+                  aria-label={`Cell ${idx + 1} ${ariaPiece}`}
+                  title={ariaPiece !== "empty" ? ariaPiece : undefined}
                 >
-                  {cell ?? ""}
+                  {cell === "X" ? (
+                    <KnightIcon className="w-8 h-8 md:w-10 md:h-10" title="Knight" />
+                  ) : cell === "O" ? (
+                    <QueenIcon className="w-8 h-8 md:w-10 md:h-10" title="Queen" />
+                  ) : (
+                    <span className="sr-only">Empty</span>
+                  )}
                 </button>
               );
             })}
