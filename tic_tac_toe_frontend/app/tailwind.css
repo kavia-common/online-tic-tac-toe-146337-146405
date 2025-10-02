@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, #root {
+  height: 100%;
+}
+
+:root {
+  --color-bg: #f9fafb;       /* Ocean Professional background */
+  --color-surface: #ffffff;  /* Surface */
+  --color-text: #111827;     /* Text */
+  --color-primary: #2563EB;  /* Blue */
+  --color-amber: #F59E0B;    /* Amber */
+}
+
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+  @apply bg-[var(--color-bg)] text-[var(--color-text)];
 }
